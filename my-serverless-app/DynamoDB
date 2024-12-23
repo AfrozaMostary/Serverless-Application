@@ -1,0 +1,19 @@
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient();
+
+module.exports.createItem = async event => {
+  const params = {
+    TableName: 'Items',
+    Item: {
+      id: event.pathParameters.id,
+      name: event.body.name,
+    },
+  };
+
+  await docClient.put(params).promise();
+
+  return {
+    statusCode: 201,
+    body: JSON.stringify({ message: 'Item created successfully!' }),
+  };
+};
